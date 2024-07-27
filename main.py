@@ -86,9 +86,17 @@ def train():
     valid_loader = build_loaders(valid_df, tokenizer, mode="valid")
 
     model = CLIPModel().to(CFG.device)
-    optimizer = torch.optim.AdamW(
-        model.parameters(), lr=CFG.lr, weight_decay=CFG.weight_decay
-    )
+    params = [
+        {"params": model.image_encoder.parameters(), "lr": CFG.image_encoder_lr},
+        {"params": model.text_encoder.parameters(), "lr": CFG.text_encoder_lr},
+        {"params": itertools.chain(
+            model.image_projection.parameters(), model.text_projection.parameters()
+        ), "lr": CFG.head_lr, "weight_decay": CFG.weight_decay}
+    ]
+    # optimizer = torch.optim.AdamW(
+    #     model.parameters(), lr=CFG.lr, weight_decay=CFG.weight_decay
+    # )
+    optimizer = torch.optim.AdamW(params, weight_decay=0.)
     lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode="min", patience=CFG.patience, factor=CFG.factor
     )
