@@ -1,11 +1,14 @@
 import torch
 
-debug = True
-image_path = "/Users/avinashkumaragarwal/PycharmProjects/pythonProject2/flickr8k/Images"
-captions_path = "/Users/avinashkumaragarwal/PycharmProjects/pythonProject2/flickr8k"
-batch_size = 8
+debug = False
+image_path = "flickr8k/Images"
+captions_path = "flickr8k"
+batch_size = 16
 num_workers = 0
 lr = 1e-3
+head_lr = 1e-3
+image_encoder_lr = 1e-4
+text_encoder_lr = 1e-5
 weight_decay = 1e-3
 patience = 2
 factor = 0.5
@@ -19,8 +22,8 @@ text_embedding = 768
 text_tokenizer = "distilbert-base-uncased"
 max_length = 200
 
-pretrained = False # for both image encoder and text encoder
-trainable = False # for both image encoder and text encoder
+pretrained = True # for both image encoder and text encoder
+trainable = True # for both image encoder and text encoder
 temperature = 1.0
 
 # image size
